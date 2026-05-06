@@ -1,8 +1,8 @@
-# Resumen Visual - Vuelo Urbano
+# Resumen Visual - NEXUS
 
 ## 🎯 Vista General Rápida
 
-### Qué es Vuelo Urbano?
+### Qué es NEXUS?
 Una plataforma de e-commerce donde:
 - **Clientes** compran ropa y artículos personalizados
 - **Revendedores** compran barato para vender caro
@@ -122,7 +122,7 @@ Una plataforma de e-commerce donde:
           │            │             │
     - ROPA            - Camiseta      - Opción 1:
     - TAZAS           Cantidad: 2       Vender con
-    - ARTÍCULOS       Tu costo: $6.60   Vuelo Urbano
+    - ARTÍCULOS       Tu costo: $6.60   NEXUS
     - ESPECIALES      Ganancia: $7      Comisión: $3-5
     - DEPORTIVO       
                       - Taza
@@ -561,4 +561,4 @@ FUTURO ESCALADO
 
 ---
 
-**¡Vuelo Urbano está listo para despegar! ✈️**
+**¡NEXUS está listo para despegar! ✈️**

@@ -224,7 +224,7 @@ export default function ResellerRegistration({
                     />
                     <div>
                       <p className="text-white font-semibold">
-                        Vender con Vuelo Urbano
+                        Vender con NEXUS
                       </p>
                       <p className="text-gray-400 text-sm">
                         Usa nuestra marca, gana $3-$5 por producto

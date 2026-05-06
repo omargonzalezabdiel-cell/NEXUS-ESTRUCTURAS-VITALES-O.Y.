@@ -1,5 +1,5 @@
 ================================================================================
-                    DOCUMENTACIÓN COMPLETA - VUELO URBANO
+                    DOCUMENTACIÓN COMPLETA - NEXUS
 ================================================================================
 
 ARCHIVOS DE DOCUMENTACIÓN CREADOS:
@@ -347,7 +347,7 @@ Móvil: Totalmente responsive (iOS/Android)
 
 ================================================================================
 
-¡Vuelo Urbano está listo para despegar! ✈️
+¡NEXUS está listo para despegar! ✈️
 
 Comienza leyendo: LEEME_PRIMERO.md
 

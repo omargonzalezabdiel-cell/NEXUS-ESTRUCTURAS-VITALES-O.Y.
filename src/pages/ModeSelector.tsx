@@ -27,13 +27,13 @@ export default function ModeSelector({ onSelect }: ModeSelectorProps) {
               <div className="absolute inset-0 bg-red-600 blur-2xl opacity-20 rounded-full"></div>
               <img
                 src="/img/mi_logo.png"
-                alt="Vuelo Urbano"
+                alt="NEXUS"
                 className="h-32 relative z-10"
               />
             </div>
           </div>
           <h1 className="text-5xl md:text-6xl font-bold text-white mb-4">
-            Bienvenido a <span className="bg-gradient-to-r from-red-500 to-red-600 bg-clip-text text-transparent">Vuelo Urbano</span>
+            Bienvenido a <span className="bg-gradient-to-r from-red-500 to-red-600 bg-clip-text text-transparent">NEXUS</span>
           </h1>
           <p className="text-gray-300 text-xl">Estilo que te impulsa - Elige tu camino</p>
         </div>
@@ -118,7 +118,7 @@ export default function ModeSelector({ onSelect }: ModeSelectorProps) {
         {/* Benefits Section */}
         <div className="bg-gradient-to-r from-gray-900/80 to-black/80 backdrop-blur-md border border-gray-700/50 rounded-2xl p-8 mb-12">
           <h3 className="text-2xl font-bold text-white mb-8 text-center">
-            ¿Por qué elegir Vuelo Urbano?
+            ¿Por qué elegir NEXUS?
           </h3>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {/* Benefit 1 */}

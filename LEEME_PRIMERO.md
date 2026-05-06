@@ -1,8 +1,8 @@
-# 📚 Documentación Vuelo Urbano - Lee Esto Primero
+# 📚 Documentación NEXUS - Lee Esto Primero
 
 ## 👋 Bienvenido!
 
-Has recibido la documentación completa de **Vuelo Urbano**, una plataforma de e-commerce moderna para clientes y revendedores.
+Has recibido la documentación completa de **NEXUS**, una plataforma de e-commerce moderna para clientes y revendedores.
 
 ---
 
@@ -498,6 +498,6 @@ Ahora que has leído esto, elige tu siguiente documento:
 
 ---
 
-**¡Vuelo Urbano está listo para despegar! ✈️**
+**¡NEXUS está listo para despegar! ✈️**
 
 Cualquier pregunta, ve a la documentación específica o contacta por WhatsApp.

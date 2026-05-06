@@ -51,7 +51,7 @@ export default function ClientMode({ onBack }: ClientModeProps) {
           </button>
 
           <div className="flex items-center justify-center flex-1 lg:flex-initial">
-            <img src="/img/mi_logo.png" alt="Vuelo Urbano" className="h-16" />
+            <img src="/img/mi_logo.png" alt="NEXUS" className="h-16" />
           </div>
 
           <button

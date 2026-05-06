@@ -1,4 +1,4 @@
-# Documentación Completa - Vuelo Urbano
+# Documentación Completa - NEXUS
 
 ## 📋 Índice
 1. [Estructura del Proyecto](#estructura-del-proyecto)
@@ -308,7 +308,7 @@ interface Props {
 **Estructura:**
 ```
 ┌─────────────────────────┐
-│   Logo Vuelo Urbano     │
+│   Logo NEXUS     │
 │ Bienvenido a Vuelo      │
 │ Urbano                  │
 └─────────────────────────┘
@@ -412,7 +412,7 @@ const [showCart, setShowCart] = useState(false);
 #### Vista HOME (inicio revendedor)
 ```
 ┌──────────────────────────┐
-│ Logo Vuelo Urbano        │
+│ Logo NEXUS        │
 │ "Bienvenido, Revendedor" │
 │ "Haz crecer tu negocio"  │
 └──────────────────────────┘

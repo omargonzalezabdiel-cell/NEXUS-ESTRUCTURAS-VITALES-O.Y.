@@ -136,7 +136,7 @@ export default function Reseller({ onBack }: ResellerProps) {
           </button>
 
           <div className="flex items-center justify-center flex-1 lg:flex-initial">
-            <img src="/img/mi_logo.png" alt="Vuelo Urbano" className="h-16" />
+            <img src="/img/mi_logo.png" alt="NEXUS" className="h-16" />
           </div>
 
           <button
@@ -173,7 +173,7 @@ export default function Reseller({ onBack }: ResellerProps) {
               {/* Title */}
               <div className="text-center mb-8">
                 <h1 className="text-3xl font-bold text-white mb-2">Bienvenido, Revendedor</h1>
-                <p className="text-yellow-200">Haz crecer tu negocio con Vuelo Urbano.</p>
+                <p className="text-yellow-200">Haz crecer tu negocio con NEXUS.</p>
               </div>
 
               {/* Benefits Row */}
@@ -441,7 +441,7 @@ export default function Reseller({ onBack }: ResellerProps) {
               <h3 className="text-2xl font-bold text-yellow-500 mb-6">Opciones de Revendedor</h3>
               <div className="space-y-6">
                 <div className="bg-gray-900 rounded-xl p-6 border border-gray-700">
-                  <h4 className="text-white font-bold text-lg mb-2">Opción 1: Vender con Vuelo Urbano</h4>
+                  <h4 className="text-white font-bold text-lg mb-2">Opción 1: Vender con NEXUS</h4>
                   <p className="text-gray-400 mb-3">Usas nuestra marca y nuestros diseños</p>
                   <div className="bg-yellow-500/10 rounded-lg p-3">
                     <p className="text-yellow-500 font-semibold">Comisión promedio: $3 - $5 por producto</p>

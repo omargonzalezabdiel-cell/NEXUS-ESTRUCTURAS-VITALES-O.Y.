@@ -1,7 +1,7 @@
 import { Product } from '../types';
 
 // ============================================================
-// CATALOGO VUELO URBANO - PRODUCTOS
+// CATALOGO nexus - PRODUCTOS
 // ============================================================
 // Para agregar un producto nuevo: copia un objeto existente y cambia los datos.
 // Para quitar un producto: simplemente borra el objeto del arreglo.
@@ -295,7 +295,7 @@ export const products: Product[] = [
 ];
 
 // ============================================================
-// COMBOS VUELO URBANO
+// COMBOS NEXUS
 // ============================================================
 // Para agregar un combo nuevo: copia un objeto existente y cambia los datos.
 // Para quitar un combo: simplemente borra el objeto del arreglo.

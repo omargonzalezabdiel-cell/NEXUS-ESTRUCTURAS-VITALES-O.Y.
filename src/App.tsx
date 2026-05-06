@@ -10,7 +10,7 @@ function App() {
   const [resellerData, setResellerData] = useState<ResellerData | null>(null);
 
   useEffect(() => {
-    document.title = 'Vuelo Urbano - Tienda de Moda Urbana';
+    document.title = 'NEXUS - Tienda de Moda Urbana';
   }, []);
 
   const handleRegisterReseller = (data: ResellerData) => {
