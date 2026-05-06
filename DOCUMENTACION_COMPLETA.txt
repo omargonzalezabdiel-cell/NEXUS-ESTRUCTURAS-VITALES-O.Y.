@@ -1,0 +1,354 @@
+================================================================================
+                    DOCUMENTACIÓN COMPLETA - VUELO URBANO
+================================================================================
+
+ARCHIVOS DE DOCUMENTACIÓN CREADOS:
+
+1. LEEME_PRIMERO.md (Índice Principal)
+   ├─ Guía rápida
+   ├─ Orden de lectura recomendado
+   ├─ Estructura del proyecto
+   ├─ Conceptos clave
+   ├─ Tareas comunes
+   └─ Dónde encontrar cosas
+
+2. ESTRUCTURA_Y_EXPLICACION.md (Técnico Completo)
+   ├─ Estructura del proyecto
+   ├─ Tipos de datos (TypeScript)
+   ├─ Datos (productos, combos, eventos)
+   ├─ Hooks personalizados
+   │  ├─ useCart - Manejo del carrito
+   │  ├─ useWhatsApp - Integración WhatsApp
+   │  └─ useCustomDesigns - Diseños personalizados
+   ├─ Componentes reutilizables
+   │  ├─ ProductCard - Tarjeta de producto
+   │  └─ CartModal - Modal del carrito
+   ├─ Páginas principales
+   │  ├─ ModeSelector - Inicial
+   │  ├─ ClientMode - Interfaz cliente
+   │  ├─ Reseller - Panel revendedor
+   │  └─ ResellerRegistration - Registro
+   ├─ Flujo de aplicación
+   ├─ Guía de modificación
+   │  ├─ Agregar producto
+   │  ├─ Cambiar precio
+   │  ├─ Cambiar imagen
+   │  ├─ Agregar combo
+   │  ├─ Agregar plantilla
+   │  ├─ Nueva categoría
+   │  ├─ Cambiar WhatsApp
+   │  └─ Cambiar colores
+   ├─ Desglose de tipos de usuario
+   ├─ Almacenamiento de datos
+   ├─ Casos de uso principales
+   └─ Checklist
+
+3. EJEMPLOS_DE_CODIGO.md (Código Real)
+   ├─ Tipos de datos con ejemplos
+   ├─ Datos (productos, combos, eventos, plantillas)
+   ├─ Hook useCart con ejemplo
+   ├─ Hook useWhatsApp con ejemplo
+   ├─ Componente ProductCard completo
+   ├─ Componente CartModal (resumen)
+   ├─ Página ClientMode completa
+   │  ├─ Home view
+   │  ├─ Catalog view
+   │  └─ Cart modal
+   ├─ Página Reseller (resumen)
+   │  ├─ Home view
+   │  ├─ Catalog view
+   │  ├─ Calculator view
+   │  ├─ Designs view
+   │  └─ Info view
+   ├─ App.tsx navegación
+   ├─ Resumen visual de estructura
+   └─ Ejemplos de uso práctico
+
+4. RESUMEN_VISUAL.md (Diagramas y Flujos)
+   ├─ Vista general rápida
+   ├─ Flujo de usuario CLIENTE
+   │  └─ Paso a paso con diagrama
+   ├─ Flujo de usuario REVENDEDOR
+   │  └─ Paso a paso con diagrama
+   ├─ Estructura de carpetas
+   ├─ Ciclo de vida de un pedido (cliente)
+   ├─ Ciclo de vida de ganancias (revendedor)
+   ├─ Datos en acción
+   │  ├─ Ejemplo: Camiseta Niño
+   │  └─ Ejemplo: Combo Duo Camisetas
+   ├─ Sistema de diseños personalizados
+   ├─ Tecnologías usadas
+   ├─ Escalabilidad futura
+   └─ Próximos pasos
+
+================================================================================
+                              ESTRUCTURA DEL CÓDIGO
+================================================================================
+
+/src
+├── main.tsx                 Entrada de React
+├── App.tsx                  Navegación principal
+├── index.css                Estilos globales
+├── types/
+│   └── index.ts            Tipos TypeScript
+├── data/
+│   └── products.ts         22 PRODUCTOS + 12 COMBOS + 5 EVENTOS + 5 PLANTILLAS
+├── hooks/
+│   ├── useCart.ts          Carrito (add, remove, getTotal, getProfit)
+│   ├── useWhatsApp.ts      WhatsApp (generateMessage, send)
+│   └── useCustomDesigns.ts Diseños personalizados
+├── components/
+│   ├── ProductCard.tsx     Tarjeta de producto
+│   └── CartModal.tsx       Modal del carrito
+└── pages/
+    ├── ModeSelector.tsx    Seleccionar Cliente/Revendedor
+    ├── ClientMode.tsx      Interfaz Cliente
+    ├── Reseller.tsx        Panel Revendedor
+    └── ResellerRegistration.tsx Registro
+
+================================================================================
+                            CONTENIDO DE DATOS
+================================================================================
+
+📦 22 PRODUCTOS
+├─ ROPA (7): Camiseta Niño, Camiseta Niña, Camiseta Mujer, Camiseta Hombre,
+│            Crop Top, Polo, Hoodie
+├─ TAZAS Y BOTELLAS (5): Taza Estándar, Taza Mágica, Jarra, Botella 500ml,
+│                        Botella 750ml
+├─ ARTÍCULOS PEQUEÑOS (5): Llavero MDF, Pin, Lanyard, Bolígrafo, Rompecabezas
+├─ ESPECIALES (4): Placa Aluminio, Piedra, Lámpara LED, Cover Celular
+└─ DEPORTIVO (3): Camiseta Deportiva, Short Deportivo, Medias
+
+🎁 12 COMBOS
+├─ COMBOS ROPA (4): Duo, Familiar 3, Familiar 4, Familiar 5+
+├─ COMBOS TAZAS (4): Duo, Trio, Familiar, Regalo
+└─ COMBOS ARTÍCULOS (4): Pack 3, Pack 5, Escolar, Recuerdo
+
+🎂 5 EVENTOS ESPECIALES
+├─ Fiesta 30 personas
+├─ Fiesta 50 personas
+├─ Velorio 40 personas
+├─ Graduación 40 personas
+└─ Equipo 25 personas
+
+🎨 5 PLANTILLAS DE DISEÑO
+├─ Urbano Básico
+├─ Deportivo Pro
+├─ Fiesta Neon
+├─ Corporativo Elegante
+└─ Graduación Classic
+
+================================================================================
+                            FUNCIONALIDADES
+================================================================================
+
+✅ CLIENTE
+├─ Ver catálogo (22 productos)
+├─ Filtrar por categoría
+├─ Agregar al carrito
+├─ Ver carrito
+├─ Ver precio final
+├─ Enviar pedido por WhatsApp
+└─ Pedir diseño personalizado
+
+✅ REVENDEDOR
+├─ Ver catálogo PRO (22 productos)
+├─ Ver 2 precios (costo + venta)
+├─ Ver ganancia por producto
+├─ Agregar al carrito
+├─ Calculadora de ganancias en tiempo real
+├─ Ver combos
+├─ Ver eventos especiales
+├─ Subir diseños personalizados (PC/Galería)
+├─ Ver plantillas de diseño
+├─ Descargar diseños
+├─ Eliminar diseños
+├─ Ver información de negocio
+├─ Hacer pedido por WhatsApp
+└─ Contacto por WhatsApp
+
+✅ GENERAL
+├─ Carrito persistente (localStorage)
+├─ Responsive design (móvil/desktop)
+├─ Interfaz profesional
+├─ Integración WhatsApp
+└─ Dark mode (revendedor)
+
+================================================================================
+                        DATOS TÉCNICOS CLAVE
+================================================================================
+
+ALMACENAMIENTO
+└─ localStorage (navegador del usuario)
+   ├─ cart-client: Carrito cliente
+   ├─ cart-reseller: Carrito revendedor
+   └─ custom-designs: Diseños subidos
+
+PRECIOS (Ejemplo: Camiseta Niño)
+├─ Precio Cliente: $9.00 (lo que paga un cliente final)
+├─ Precio Base: $3.30 (lo que paga un revendedor)
+└─ Ganancia Revendedor: $5.70 (172%)
+
+IMÁGENES
+└─ URLs de Unsplash (público, gratis, 500x500px)
+
+INTEGRACIÓN WHATSAPP
+├─ WhatsApp API (automático con deep linking)
+├─ Número: +507 6498-7682
+└─ Mensaje pre-formateado con pedido
+
+TIPOS DE USUARIO
+├─ Cliente: ve priceClient
+└─ Revendedor: ve priceClient + priceBase + ganancia
+
+================================================================================
+                          CÓMO USAR DOCUMENTACIÓN
+================================================================================
+
+OPCIÓN 1: APRENDIZAJE COMPLETO (1 hora)
+1. Lee: LEEME_PRIMERO.md (índice)
+2. Lee: RESUMEN_VISUAL.md (flujos)
+3. Lee: ESTRUCTURA_Y_EXPLICACION.md (técnico)
+4. Lee: EJEMPLOS_DE_CODIGO.md (código)
+
+OPCIÓN 2: ENTENDIMIENTO RÁPIDO (30 min)
+1. Lee: RESUMEN_VISUAL.md (diagramas)
+2. Hojea: ESTRUCTURA_Y_EXPLICACION.md (secciones que te interesan)
+3. Busca: EJEMPLOS_DE_CODIGO.md (si necesitas ver código)
+
+OPCIÓN 3: SOLO PARA MODIFICAR (variable)
+1. Ve a: ESTRUCTURA_Y_EXPLICACION.md → "Guía de Modificación"
+2. Copia: EJEMPLOS_DE_CODIGO.md → similares a lo que quieres
+3. Modifica: El archivo que necesites cambiar
+
+================================================================================
+                          MODIFICACIONES COMUNES
+================================================================================
+
+AGREGAR PRODUCTO
+├─ Archivo: src/data/products.ts
+├─ Busca: array 'products'
+├─ Agrega: objeto nuevo con id, name, prices, image, etc.
+└─ Filtro se genera automático
+
+CAMBIAR PRECIO
+├─ Archivo: src/data/products.ts
+├─ Busca: el producto
+├─ Cambia: priceClient o priceBase
+└─ Se actualiza automático en toda la app
+
+CAMBIAR IMAGEN
+├─ Archivo: src/data/products.ts
+├─ Busca: el producto
+├─ Cambia: url en campo 'image'
+└─ Usar: https://images.unsplash.com/photo-XXXXX?w=500&h=500&fit=crop
+
+CAMBIAR WHATSAPP
+├─ Archivo 1: src/hooks/useWhatsApp.ts
+├─ Archivo 2: src/pages/ModeSelector.tsx (y otros)
+├─ Busca: +507 6498-7682
+└─ Reemplaza: con nuevo número
+
+AGREGAR CATEGORÍA
+├─ Archivo: src/data/products.ts
+├─ Crea: producto con category: 'MI_CATEGORIA'
+└─ Filtro aparece automático
+
+================================================================================
+                        TECNOLOGÍAS UTILIZADAS
+================================================================================
+
+FRONTEND
+├─ React 18: Framework principal
+├─ TypeScript: Tipado seguro
+├─ Tailwind CSS: Estilos con clases
+├─ Lucide Icons: Iconos SVG
+├─ Vite: Empaquetador rápido
+└─ React Hooks: useState, useCallback, etc.
+
+ALMACENAMIENTO
+└─ localStorage: Datos persistentes en navegador
+
+SERVICIOS EXTERNOS
+├─ Unsplash: Imágenes (URLs públicas)
+└─ WhatsApp API: Mensajería
+
+DESARROLLO
+├─ npm: Gestor de paquetes
+├─ TypeScript Check: Verificación de tipos
+├─ ESLint: Linter de código
+└─ Vite Dev Server: Desarrollo local
+
+================================================================================
+                            ESTADÍSTICAS
+================================================================================
+
+Líneas de código: ~1,400
+Archivos fuente: 14
+Componentes: 2
+Páginas: 4
+Hooks: 3
+Tipos TypeScript: 5+
+
+Productos: 22
+Combos: 12
+Eventos: 5
+Plantillas diseño: 5
+Almacenamiento: localStorage (3 claves)
+
+Colores principales: Rojo (#dc2626), Amarillo (#eab308), Verde (#22c55e)
+Fuente: Sistema (sin custom)
+Estilos: Tailwind CSS (sin CSS externo)
+
+================================================================================
+                        PRÓXIMOS PASOS
+================================================================================
+
+CORTO PLAZO
+├─ Agregar más productos
+├─ Personalizar colores/tema
+├─ Añadir más diseños
+└─ Optimizar para SEO
+
+MEDIANO PLAZO
+├─ Integrar Supabase (base de datos)
+├─ Autenticación (login/signup)
+├─ API (Edge Functions)
+└─ Admin panel
+
+LARGO PLAZO
+├─ Pagos (Stripe)
+├─ Notificaciones (Email/SMS)
+├─ Analytics
+├─ App móvil
+└─ CRM completo
+
+================================================================================
+                            SOPORTE
+================================================================================
+
+DOCUMENTACIÓN: Estos 4 archivos .md
+CÓDIGO: src/ folder
+EJEMPLOS: EJEMPLOS_DE_CODIGO.md
+FLUJOS: RESUMEN_VISUAL.md
+MODIFICACIÓN: ESTRUCTURA_Y_EXPLICACION.md → Guía de Modificación
+
+WhatsApp: +507 6498-7682
+
+================================================================================
+                        VERSIÓN DEL PROYECTO
+================================================================================
+
+Versión: 1.0.0
+Estado: Producción-listo (con datos mockup)
+Última actualización: Mayo 2026
+Navegador: Cualquiera moderno (Chrome, Firefox, Safari, Edge)
+Móvil: Totalmente responsive (iOS/Android)
+
+================================================================================
+
+¡Vuelo Urbano está listo para despegar! ✈️
+
+Comienza leyendo: LEEME_PRIMERO.md
+
+================================================================================
