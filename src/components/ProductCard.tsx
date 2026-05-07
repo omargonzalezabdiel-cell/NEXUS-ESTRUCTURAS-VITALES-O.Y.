@@ -11,7 +11,7 @@ interface ProductCardProps {
 
 export default function ProductCard({ product, mode, onAddToCart }: ProductCardProps) {
   const [selectedSize, setSelectedSize] = useState('');
-  const [selectedColor, setSelectedColor] = useState('');
+  const [selectedColor, setSelectedColor] = useState(product.colors[0] || '');
   const [quantity, setQuantity] = useState(1);
   const [isAdded, setIsAdded] = useState(false);
 
@@ -30,16 +30,16 @@ export default function ProductCard({ product, mode, onAddToCart }: ProductCardP
   };
 
   const isClient = mode === 'client';
-  const accentBg = isClient ? 'bg-red-600' : 'bg-yellow-500';
-  const accentHover = isClient ? 'hover:bg-red-700' : 'hover:bg-yellow-600';
-  const accentText = isClient ? 'text-red-600' : 'text-yellow-500';
-  const accentBadge = isClient ? 'bg-red-100 text-red-700' : 'bg-yellow-500/20 text-yellow-400';
-  const cardBg = isClient ? 'bg-white border border-gray-100' : 'bg-gray-900 border border-gray-700';
+  const accentBg = isClient ? 'bg-blue-900' : 'bg-slate-700';
+  const accentHover = isClient ? 'hover:bg-blue-800' : 'hover:bg-slate-600';
+  const accentText = isClient ? 'text-blue-900' : 'text-slate-600';
+  const accentBadge = isClient ? 'bg-blue-100 text-blue-900' : 'bg-slate-600/20 text-slate-700';
+  const cardBg = isClient ? 'bg-white border border-blue-100' : 'bg-slate-800 border border-slate-700';
   const textPrimary = isClient ? 'text-gray-900' : 'text-white';
-  const textSecondary = isClient ? 'text-gray-600' : 'text-gray-400';
-  const selectorBg = isClient ? 'bg-gray-100 border-gray-200' : 'bg-gray-800 border-gray-700';
-  const selectorActive = isClient ? 'bg-red-600 text-white' : 'bg-yellow-500 text-gray-900';
-  const selectorInactive = isClient ? 'bg-gray-100 text-gray-700 hover:bg-gray-200' : 'bg-gray-700 text-gray-300 hover:bg-gray-600';
+  const textSecondary = isClient ? 'text-gray-600' : 'text-slate-300';
+  const selectorBg = isClient ? 'bg-blue-50 border-blue-200' : 'bg-slate-700 border-slate-600';
+  const selectorActive = isClient ? 'bg-blue-900 text-white' : 'bg-slate-600 text-white';
+  const selectorInactive = isClient ? 'bg-blue-50 text-gray-700 hover:bg-blue-100' : 'bg-slate-700 text-slate-300 hover:bg-slate-600';
 
   return (
     <div className={`rounded-2xl overflow-hidden transition-all hover:shadow-xl ${cardBg}`}>
@@ -61,7 +61,7 @@ export default function ProductCard({ product, mode, onAddToCart }: ProductCardP
       </div>
 
       {/* Content */}
-      <div className={`p-4 ${!isClient ? 'border-t border-gray-700' : ''}`}>
+      <div className={`p-4 ${!isClient ? 'border-t border-slate-700' : ''}`}>
         <h3 className={`font-bold text-lg mb-3 ${textPrimary}`}>
           {product.name}
         </h3>

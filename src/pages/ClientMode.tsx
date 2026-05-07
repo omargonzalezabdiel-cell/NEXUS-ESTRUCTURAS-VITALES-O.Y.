@@ -31,13 +31,13 @@ export default function ClientMode({ onBack }: ClientModeProps) {
   const filteredProducts = products.filter((p) => p.category === selectedCategory);
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-blue-50">
       {/* Header */}
-      <header className="bg-white shadow-sm sticky top-0 z-40 border-b border-red-100">
+      <header className="bg-white shadow-sm sticky top-0 z-40 border-b border-blue-200">
         <div className="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
           <button
             onClick={() => setShowMenu(!showMenu)}
-            className="lg:hidden text-gray-700"
+            className="lg:hidden text-blue-900"
           >
             {showMenu ? <X size={24} /> : <Menu size={24} />}
           </button>
@@ -48,11 +48,11 @@ export default function ClientMode({ onBack }: ClientModeProps) {
 
           <button
             onClick={() => setShowCart(true)}
-            className="relative p-2 text-red-600 hover:bg-red-50 rounded-full transition-colors"
+            className="relative p-2 text-blue-900 hover:bg-blue-100 rounded-full transition-colors"
           >
             <ShoppingCart size={28} />
             {cart.getTotalItems() > 0 && (
-              <span className="absolute -top-1 -right-1 bg-red-600 text-white text-xs font-bold w-6 h-6 rounded-full flex items-center justify-center">
+              <span className="absolute -top-1 -right-1 bg-blue-900 text-white text-xs font-bold w-6 h-6 rounded-full flex items-center justify-center">
                 {cart.getTotalItems()}
               </span>
             )}
@@ -85,8 +85,8 @@ export default function ClientMode({ onBack }: ClientModeProps) {
                 </p>
               </div>
 
-              <div className="bg-red-100 border border-red-300 rounded-full px-4 py-2 inline-flex items-center gap-2 mb-8">
-                <span className="text-red-600 font-semibold text-sm">
+              <div className="bg-blue-100 border border-blue-300 rounded-full px-4 py-2 inline-flex items-center gap-2 mb-8">
+                <span className="text-blue-900 font-semibold text-sm">
                   Cotizacion final via WhatsApp
                 </span>
               </div>
@@ -95,11 +95,11 @@ export default function ClientMode({ onBack }: ClientModeProps) {
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
                 <button
                   onClick={() => setViewMode('catalog')}
-                  className="bg-red-600 hover:bg-red-700 text-white rounded-2xl p-6 transition-all transform hover:scale-105 shadow-lg"
+                  className="bg-blue-900 hover:bg-blue-800 text-white rounded-2xl p-6 transition-all transform hover:scale-105 shadow-lg"
                 >
                   <div className="text-4xl mb-3">👕</div>
                   <h3 className="text-xl font-bold mb-2">CATALOGO</h3>
-                  <p className="text-red-100 text-sm mb-4">Ver productos base</p>
+                  <p className="text-blue-100 text-sm mb-4">Ver productos base</p>
                   <div className="inline-flex items-center gap-1 text-sm font-semibold">
                     Ver productos <span>→</span>
                   </div>
@@ -113,7 +113,7 @@ export default function ClientMode({ onBack }: ClientModeProps) {
                   <h3 className="text-xl font-bold mb-2">CARRITO</h3>
                   <p className="text-orange-100 text-sm mb-4">Ver mi pedido</p>
                   {cart.getTotalItems() > 0 && (
-                    <div className="absolute -top-2 -right-2 bg-red-600 text-white text-xs font-bold w-7 h-7 rounded-full flex items-center justify-center">
+                    <div className="absolute -top-2 -right-2 bg-blue-900 text-white text-xs font-bold w-7 h-7 rounded-full flex items-center justify-center">
                       {cart.getTotalItems()}
                     </div>
                   )}
@@ -194,13 +194,13 @@ export default function ClientMode({ onBack }: ClientModeProps) {
         <div className="max-w-7xl mx-auto px-4 py-8">
           <button
             onClick={() => setViewMode('home')}
-            className="mb-6 text-red-600 hover:text-red-700 font-semibold flex items-center gap-1"
+            className="mb-6 text-blue-900 hover:text-blue-800 font-semibold flex items-center gap-1"
           >
             ← Volver
           </button>
 
           {/* Category Filter */}
-          <div className="bg-white border border-gray-200 rounded-xl p-4 mb-8 shadow-sm">
+          <div className="bg-white border border-blue-200 rounded-xl p-4 mb-8 shadow-sm">
             <p className="text-gray-700 font-semibold mb-3">Categorias:</p>
             <div className="flex flex-wrap gap-2">
               {categories.map((cat) => (
@@ -209,8 +209,8 @@ export default function ClientMode({ onBack }: ClientModeProps) {
                   onClick={() => setSelectedCategory(cat)}
                   className={`px-4 py-2 rounded-lg font-semibold transition-all text-sm ${
                     selectedCategory === cat
-                      ? 'bg-red-600 text-white shadow-md'
-                      : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                      ? 'bg-blue-900 text-white shadow-md'
+                      : 'bg-blue-50 text-gray-700 hover:bg-blue-100'
                   }`}
                 >
                   {CATEGORY_LABELS[cat]}
@@ -236,7 +236,7 @@ export default function ClientMode({ onBack }: ClientModeProps) {
           <div className="text-center">
             <button
               onClick={() => setViewMode('home')}
-              className="bg-red-600 hover:bg-red-700 text-white px-8 py-3 rounded-full font-semibold transition-colors"
+              className="bg-blue-900 hover:bg-blue-800 text-white px-8 py-3 rounded-full font-semibold transition-colors"
             >
               Volver al Inicio
             </button>

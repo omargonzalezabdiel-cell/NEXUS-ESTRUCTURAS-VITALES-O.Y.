@@ -30,13 +30,13 @@ export default function Reseller({ onBack }: ResellerProps) {
   };
 
   return (
-    <div className="min-h-screen bg-gray-900">
+    <div className="min-h-screen bg-slate-900">
       {/* Header */}
-      <header className="bg-black shadow-sm sticky top-0 z-40 border-b border-yellow-700">
+      <header className="bg-slate-950 shadow-sm sticky top-0 z-40 border-b border-blue-700">
         <div className="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
           <button
             onClick={() => setShowMenu(!showMenu)}
-            className="lg:hidden text-yellow-500"
+            className="lg:hidden text-blue-300"
           >
             {showMenu ? <X size={24} /> : <Menu size={24} />}
           </button>
@@ -47,11 +47,11 @@ export default function Reseller({ onBack }: ResellerProps) {
 
           <button
             onClick={() => setShowCart(true)}
-            className="relative p-2 text-yellow-500 hover:bg-yellow-500/10 rounded-full transition-colors"
+            className="relative p-2 text-blue-300 hover:bg-blue-300/10 rounded-full transition-colors"
           >
             <ShoppingCart size={28} />
             {cart.getTotalItems() > 0 && (
-              <span className="absolute -top-1 -right-1 bg-yellow-500 text-black text-xs font-bold w-6 h-6 rounded-full flex items-center justify-center">
+              <span className="absolute -top-1 -right-1 bg-blue-400 text-slate-900 text-xs font-bold w-6 h-6 rounded-full flex items-center justify-center">
                 {cart.getTotalItems()}
               </span>
             )}
@@ -72,33 +72,33 @@ export default function Reseller({ onBack }: ResellerProps) {
 
       {/* Home View */}
       {viewMode === 'home' && (
-        <div className="bg-gradient-to-b from-gray-800 to-gray-900 px-4 py-8">
+        <div className="bg-gradient-to-b from-slate-800 to-slate-900 px-4 py-8">
           <div className="max-w-3xl mx-auto">
             <div className="text-center mb-8">
               <h1 className="text-3xl font-bold text-white mb-2">
                 Bienvenido, Revendedor
               </h1>
-              <p className="text-yellow-200">
+              <p className="text-blue-200">
                 Haz pedidos por volumen con precios mayoristas.
               </p>
             </div>
 
             <div className="grid grid-cols-3 gap-3 mb-8">
-              <div className="bg-gray-800 border border-yellow-700 rounded-lg p-3 text-center">
+              <div className="bg-gray-800 border border-blue-700 rounded-lg p-3 text-center">
                 <div className="text-2xl mb-1">👑</div>
-                <p className="text-yellow-500 font-semibold text-xs">
+                <p className="text-blue-300 font-semibold text-xs">
                   Productos de calidad
                 </p>
               </div>
-              <div className="bg-gray-800 border border-yellow-700 rounded-lg p-3 text-center">
+              <div className="bg-gray-800 border border-blue-700 rounded-lg p-3 text-center">
                 <div className="text-2xl mb-1">📈</div>
-                <p className="text-yellow-500 font-semibold text-xs">
+                <p className="text-blue-300 font-semibold text-xs">
                   Precios mayoristas
                 </p>
               </div>
-              <div className="bg-gray-800 border border-yellow-700 rounded-lg p-3 text-center">
+              <div className="bg-gray-800 border border-blue-700 rounded-lg p-3 text-center">
                 <div className="text-2xl mb-1">🤝</div>
-                <p className="text-yellow-500 font-semibold text-xs">
+                <p className="text-blue-300 font-semibold text-xs">
                   Soporte constante
                 </p>
               </div>
@@ -107,40 +107,40 @@ export default function Reseller({ onBack }: ResellerProps) {
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
               <button
                 onClick={() => setViewMode('catalog')}
-                className="bg-gray-800 border-2 border-yellow-600 hover:border-yellow-400 text-white rounded-2xl p-6 transition-all hover:shadow-lg hover:shadow-yellow-500/20 group"
+                className="bg-gray-800 border-2 border-blue-600 hover:border-blue-400 text-white rounded-2xl p-6 transition-all hover:shadow-lg hover:shadow-blue-500/20 group"
               >
                 <div className="flex items-start justify-between mb-3">
                   <div className="text-3xl">👔</div>
                   <ArrowRight
                     size={20}
-                    className="text-yellow-500 group-hover:translate-x-1 transition-transform"
+                    className="text-blue-400 group-hover:translate-x-1 transition-transform"
                   />
                 </div>
                 <h3 className="text-lg font-bold mb-1">CATALOGO PRO</h3>
-                <p className="text-yellow-200 text-sm mb-4">
+                <p className="text-slate-200 text-sm mb-4">
                   Pedidos por volumen con botones rapidos.
                 </p>
-                <div className="bg-yellow-600 hover:bg-yellow-500 text-gray-900 px-4 py-2 rounded-lg font-semibold text-sm inline-flex items-center gap-2">
+                <div className="bg-blue-600 hover:bg-blue-500 text-white px-4 py-2 rounded-lg font-semibold text-sm inline-flex items-center gap-2">
                   Ver catalogo <span>→</span>
                 </div>
               </button>
 
               <button
                 onClick={() => setViewMode('info')}
-                className="bg-gray-800 border-2 border-yellow-600 hover:border-yellow-400 text-white rounded-2xl p-6 transition-all hover:shadow-lg hover:shadow-yellow-500/20 group"
+                className="bg-gray-800 border-2 border-blue-600 hover:border-blue-400 text-white rounded-2xl p-6 transition-all hover:shadow-lg hover:shadow-blue-500/20 group"
               >
                 <div className="flex items-start justify-between mb-3">
                   <div className="text-3xl">ℹ️</div>
                   <ArrowRight
                     size={20}
-                    className="text-yellow-500 group-hover:translate-x-1 transition-transform"
+                    className="text-blue-400 group-hover:translate-x-1 transition-transform"
                   />
                 </div>
                 <h3 className="text-lg font-bold mb-1">INFORMACION</h3>
-                <p className="text-yellow-200 text-sm mb-4">
+                <p className="text-slate-200 text-sm mb-4">
                   Consejos y estrategias de negocio.
                 </p>
-                <div className="bg-yellow-600 hover:bg-yellow-500 text-gray-900 px-4 py-2 rounded-lg font-semibold text-sm inline-flex items-center gap-2">
+                <div className="bg-blue-600 hover:bg-blue-500 text-white px-4 py-2 rounded-lg font-semibold text-sm inline-flex items-center gap-2">
                   Ver informacion <span>→</span>
                 </div>
               </button>
@@ -150,7 +150,7 @@ export default function Reseller({ onBack }: ResellerProps) {
               <h3 className="text-white font-bold mb-2">
                 ¿Dudas o consultas?
               </h3>
-              <p className="text-yellow-200 text-sm mb-4">
+              <p className="text-slate-200 text-sm mb-4">
                 Escribenos por WhatsApp
               </p>
               <button
@@ -159,7 +159,7 @@ export default function Reseller({ onBack }: ResellerProps) {
                     'Hola, tengo dudas sobre el programa de revendedores'
                   )
                 }
-                className="bg-yellow-600 hover:bg-yellow-500 text-gray-900 px-6 py-2 rounded-full font-semibold text-sm inline-flex items-center gap-2"
+                className="bg-blue-600 hover:bg-blue-500 text-white px-6 py-2 rounded-full font-semibold text-sm inline-flex items-center gap-2"
               >
                 <MessageCircle size={16} />
                 Contactar
@@ -174,13 +174,13 @@ export default function Reseller({ onBack }: ResellerProps) {
         <div className="max-w-5xl mx-auto px-4 py-8">
           <button
             onClick={() => setViewMode('home')}
-            className="mb-6 text-yellow-500 hover:text-yellow-400 font-semibold flex items-center gap-1"
+            className="mb-6 text-blue-400 hover:text-blue-300 font-semibold flex items-center gap-1"
           >
             ← Volver
           </button>
 
-          <div className="bg-gray-800 border border-gray-700 rounded-xl p-4 mb-8">
-            <p className="text-gray-300 font-semibold mb-3">Categorias:</p>
+          <div className="bg-gray-800 border border-slate-700 rounded-xl p-4 mb-8">
+            <p className="text-slate-300 font-semibold mb-3">Categorias:</p>
             <div className="flex flex-wrap gap-2">
               {categories.map((cat) => (
                 <button
@@ -188,8 +188,8 @@ export default function Reseller({ onBack }: ResellerProps) {
                   onClick={() => setSelectedCategory(cat)}
                   className={`px-4 py-2 rounded-lg font-semibold transition-all text-sm ${
                     selectedCategory === cat
-                      ? 'bg-yellow-600 text-gray-900'
-                      : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
+                      ? 'bg-blue-600 text-white'
+                      : 'bg-slate-700 text-slate-300 hover:bg-slate-600'
                   }`}
                 >
                   {CATEGORY_LABELS[cat]}
@@ -214,7 +214,7 @@ export default function Reseller({ onBack }: ResellerProps) {
           <div className="text-center">
             <button
               onClick={() => setViewMode('home')}
-              className="bg-yellow-600 hover:bg-yellow-500 text-gray-900 px-8 py-3 rounded-full font-semibold transition-colors"
+              className="bg-blue-600 hover:bg-blue-500 text-white px-8 py-3 rounded-full font-semibold transition-colors"
             >
               Volver al Inicio
             </button>
@@ -227,7 +227,7 @@ export default function Reseller({ onBack }: ResellerProps) {
         <div className="max-w-3xl mx-auto px-4 py-8">
           <button
             onClick={() => setViewMode('home')}
-            className="mb-6 text-yellow-500 hover:text-yellow-400 font-semibold flex items-center gap-1"
+            className="mb-6 text-blue-400 hover:text-blue-300 font-semibold flex items-center gap-1"
           >
             ← Volver
           </button>
@@ -246,7 +246,7 @@ export default function Reseller({ onBack }: ResellerProps) {
                     Usas nuestra marca y nuestros diseños
                   </p>
                   <div className="bg-yellow-500/10 rounded-lg p-3">
-                    <p className="text-yellow-500 font-semibold">
+                    <p className="text-blue-300 font-semibold">
                       Comision promedio: $3 - $5 por producto
                     </p>
                   </div>
@@ -335,7 +335,7 @@ function ResellerProductRow({
   };
 
   return (
-    <div className="bg-gray-800 border border-gray-700 rounded-xl p-4">
+    <div className="bg-gray-800 border border-slate-700 rounded-xl p-4">
       <div className="flex gap-4 items-start">
         {/* Image */}
         <img

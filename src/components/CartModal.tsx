@@ -19,15 +19,15 @@ export default function CartModal({
   onSendOrder,
 }: CartModalProps) {
   const isClient = mode === 'client';
-  const bgMain = isClient ? 'bg-white' : 'bg-gray-900 border border-gray-700';
-  const bgHeader = isClient ? 'bg-red-50 border-gray-100' : 'bg-gray-800 border-gray-700';
-  const bgItem = isClient ? 'bg-gray-50 border-gray-200' : 'bg-gray-800 border-gray-700';
-  const bgFooter = isClient ? 'bg-gray-50 border-gray-100' : 'bg-gray-800 border-gray-700';
+  const bgMain = isClient ? 'bg-white' : 'bg-slate-800 border border-slate-700';
+  const bgHeader = isClient ? 'bg-blue-50 border-blue-100' : 'bg-slate-700 border-slate-600';
+  const bgItem = isClient ? 'bg-blue-50 border-blue-100' : 'bg-slate-700 border-slate-600';
+  const bgFooter = isClient ? 'bg-blue-50 border-blue-100' : 'bg-slate-700 border-slate-600';
   const textPrimary = isClient ? 'text-gray-900' : 'text-white';
-  const textSecondary = isClient ? 'text-gray-600' : 'text-gray-400';
-  const accentText = isClient ? 'text-red-600' : 'text-yellow-500';
-  const btnAccent = isClient ? 'bg-red-600 hover:bg-red-700 text-white' : 'bg-yellow-500 hover:bg-yellow-600 text-gray-900';
-  const btnSecondary = isClient ? 'bg-gray-200 text-gray-700 hover:bg-gray-300' : 'bg-gray-700 text-gray-300 hover:bg-gray-600';
+  const textSecondary = isClient ? 'text-gray-600' : 'text-slate-300';
+  const accentText = isClient ? 'text-blue-900' : 'text-blue-300';
+  const btnAccent = isClient ? 'bg-blue-900 hover:bg-blue-800 text-white' : 'bg-slate-600 hover:bg-slate-500 text-white';
+  const btnSecondary = isClient ? 'bg-blue-100 text-gray-900 hover:bg-blue-200' : 'bg-slate-600 text-slate-300 hover:bg-slate-500';
 
   return (
     <div className="fixed inset-0 bg-black/50 z-50 flex items-end md:items-center md:justify-center p-4">
@@ -40,7 +40,7 @@ export default function CartModal({
           <button
             onClick={onClose}
             className={`p-2 rounded-full transition-colors ${
-              isClient ? 'hover:bg-red-100 text-gray-700' : 'hover:bg-gray-700 text-gray-300'
+              isClient ? 'hover:bg-blue-100 text-gray-700' : 'hover:bg-slate-600 text-gray-300'
             }`}
           >
             <X size={24} />
@@ -80,13 +80,13 @@ export default function CartModal({
 
                       <div className="flex items-center gap-3">
                         <div className={`flex items-center gap-1 rounded-lg border ${
-                          isClient ? 'bg-white border-gray-300' : 'bg-gray-700 border-gray-600'
+                          isClient ? 'bg-white border-blue-200' : 'bg-slate-600 border-slate-500'
                         }`}>
                           <button
                             onClick={() =>
                               onUpdateQuantity(item.productId, item.selectedSize, item.selectedColor, item.quantity - 1)
                             }
-                            className={`p-1 ${isClient ? 'hover:bg-red-50 text-gray-700' : 'hover:bg-gray-600 text-gray-300'}`}
+                            className={`p-1 ${isClient ? 'hover:bg-blue-100 text-gray-700' : 'hover:bg-slate-500 text-slate-300'}`}
                           >
                             <Minus size={16} />
                           </button>
@@ -97,7 +97,7 @@ export default function CartModal({
                             onClick={() =>
                               onUpdateQuantity(item.productId, item.selectedSize, item.selectedColor, item.quantity + 1)
                             }
-                            className={`p-1 ${isClient ? 'hover:bg-red-50 text-gray-700' : 'hover:bg-gray-600 text-gray-300'}`}
+                            className={`p-1 ${isClient ? 'hover:bg-blue-100 text-gray-700' : 'hover:bg-slate-500 text-slate-300'}`}
                           >
                             <Plus size={16} />
                           </button>
@@ -105,7 +105,7 @@ export default function CartModal({
                         <button
                           onClick={() => onRemoveItem(item.productId, item.selectedSize, item.selectedColor)}
                           className={`p-2 rounded-lg transition-colors ml-auto ${
-                            isClient ? 'hover:bg-red-100 text-red-600' : 'hover:bg-red-500/20 text-red-400'
+                            isClient ? 'hover:bg-red-100 text-red-600' : 'hover:bg-blue-1000/20 text-red-400'
                           }`}
                         >
                           <Trash2 size={18} />
