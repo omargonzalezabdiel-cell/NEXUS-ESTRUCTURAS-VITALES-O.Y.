@@ -1,34 +1,20 @@
+export type Category = 'textil' | 'hogar' | 'accesorios';
+
 export interface Product {
   id: string;
   name: string;
-  description: string;
-  priceClient: number;
-  priceBase: number;
   image: string;
-  stock: number;
-  category: string;
-  subcategory?: string;
-}
-
-export interface CustomDesign {
-  id: string;
-  name: string;
-  logoUrl?: string;
+  category: Category;
+  hasSizes: boolean;
   colors: string[];
-  description: string;
-  products: string[];
-  createdAt: Date;
 }
 
 export interface CartItem {
   productId: string;
   name: string;
+  image: string;
+  category: Category;
+  selectedSize: string;
+  selectedColor: string;
   quantity: number;
-  priceClient: number;
-  priceBase: number;
-}
-
-export interface Cart {
-  items: CartItem[];
-  mode: 'client' | 'reseller';
 }

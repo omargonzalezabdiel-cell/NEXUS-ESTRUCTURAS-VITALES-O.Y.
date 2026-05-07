@@ -1,126 +1,32 @@
-import { useState, useRef, useCallback } from 'react';
-import { Menu, X, ShoppingCart, Download, Upload, Trash2, Image, MessageCircle, ArrowRight } from 'lucide-react';
-import { products, combos, eventPackages, designTemplates } from '../data/products';
+import { useState } from 'react';
+import { Menu, X, ShoppingCart, MessageCircle, ArrowRight, Plus, Minus } from 'lucide-react';
+import { products, CATEGORY_LABELS, SIZES } from '../data/products';
+import { Category, Product } from '../types';
 import { useCart } from '../hooks/useCart';
 import { useWhatsApp } from '../hooks/useWhatsApp';
-import ProductCard from '../components/ProductCard';
 import CartModal from '../components/CartModal';
 
 interface ResellerProps {
   onBack: () => void;
 }
 
-interface CustomDesign {
-  id: string;
-  name: string;
-  description: string;
-  imageData: string;
-  products: string[];
-  createdAt: string;
-}
-
 export default function Reseller({ onBack }: ResellerProps) {
   const [showCart, setShowCart] = useState(false);
   const [showMenu, setShowMenu] = useState(false);
-  const [viewMode, setViewMode] = useState<'home' | 'catalog' | 'combos' | 'events' | 'designs' | 'calculator' | 'info'>('home');
-  const [selectedCategory, setSelectedCategory] = useState<string>('ROPA');
-  const [showDesignForm, setShowDesignForm] = useState(false);
-  const [customDesigns, setCustomDesigns] = useState<CustomDesign[]>(() => {
-    const saved = localStorage.getItem('custom-designs');
-    return saved ? JSON.parse(saved) : [];
-  });
-  const [newDesign, setNewDesign] = useState({ name: '', description: '', products: [] as string[] });
-  const [designImage, setDesignImage] = useState<string>('');
-  const fileInputRef = useRef<HTMLInputElement>(null);
-  const galleryInputRef = useRef<HTMLInputElement>(null);
+  const [viewMode, setViewMode] = useState<'home' | 'catalog' | 'info'>('home');
+  const [selectedCategory, setSelectedCategory] = useState<Category>('textil');
   const cart = useCart('reseller');
   const { generateOrderMessage, sendToWhatsApp } = useWhatsApp();
 
-  const categories = Array.from(new Set(products.map(p => p.category)));
-  const filteredProducts = selectedCategory
-    ? products.filter(p => p.category === selectedCategory)
-    : products;
+  const categories: Category[] = ['textil', 'hogar', 'accesorios'];
+  const filteredProducts = products.filter((p) => p.category === selectedCategory);
 
   const handleSendOrder = () => {
-    if (cart.items.length === 0) {
-      alert('Agrega productos al carrito');
-      return;
-    }
-    const message = generateOrderMessage(
-      cart.items,
-      'reseller',
-      cart.getTotal(),
-      cart.getProfit()
-    );
+    if (cart.items.length === 0) return;
+    const message = generateOrderMessage(cart.items, 'reseller');
     sendToWhatsApp(message);
     cart.clearCart();
     setShowCart(false);
-  };
-
-  const handleImageUpload = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-    const reader = new FileReader();
-    reader.onload = (event) => {
-      const result = event.target?.result as string;
-      setDesignImage(result);
-    };
-    reader.readAsDataURL(file);
-  }, []);
-
-  const saveCustomDesign = () => {
-    if (!newDesign.name || !designImage) {
-      alert('Agrega un nombre y una imagen para el diseño');
-      return;
-    }
-    const design: CustomDesign = {
-      id: Date.now().toString(),
-      name: newDesign.name,
-      description: newDesign.description,
-      imageData: designImage,
-      products: newDesign.products,
-      createdAt: new Date().toISOString()
-    };
-    const updated = [...customDesigns, design];
-    setCustomDesigns(updated);
-    localStorage.setItem('custom-designs', JSON.stringify(updated));
-    setNewDesign({ name: '', description: '', products: [] });
-    setDesignImage('');
-    setShowDesignForm(false);
-  };
-
-  const deleteCustomDesign = (id: string) => {
-    const updated = customDesigns.filter(d => d.id !== id);
-    setCustomDesigns(updated);
-    localStorage.setItem('custom-designs', JSON.stringify(updated));
-  };
-
-  const downloadDesign = (imageData: string, name: string) => {
-    const link = document.createElement('a');
-    link.href = imageData;
-    link.download = `${name.replace(/\s+/g, '_')}.png`;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-  };
-
-  const downloadTemplate = (imageUrl: string, name: string) => {
-    const link = document.createElement('a');
-    link.href = imageUrl;
-    link.download = `${name.replace(/\s+/g, '_')}.png`;
-    link.target = '_blank';
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-  };
-
-  const toggleProductInDesign = (productId: string) => {
-    setNewDesign(prev => ({
-      ...prev,
-      products: prev.products.includes(productId)
-        ? prev.products.filter(id => id !== productId)
-        : [...prev.products, productId]
-    }));
   };
 
   return (
@@ -166,133 +72,106 @@ export default function Reseller({ onBack }: ResellerProps) {
 
       {/* Home View */}
       {viewMode === 'home' && (
-        <div className="min-h-screen bg-gray-900">
-          {/* Hero Section */}
-          <div className="bg-gradient-to-b from-gray-800 to-gray-900 px-4 py-8">
-            <div className="max-w-3xl mx-auto">
-              {/* Title */}
-              <div className="text-center mb-8">
-                <h1 className="text-3xl font-bold text-white mb-2">Bienvenido, Revendedor</h1>
-                <p className="text-yellow-200">Haz crecer tu negocio con NEXUS.</p>
+        <div className="bg-gradient-to-b from-gray-800 to-gray-900 px-4 py-8">
+          <div className="max-w-3xl mx-auto">
+            <div className="text-center mb-8">
+              <h1 className="text-3xl font-bold text-white mb-2">
+                Bienvenido, Revendedor
+              </h1>
+              <p className="text-yellow-200">
+                Haz pedidos por volumen con precios mayoristas.
+              </p>
+            </div>
+
+            <div className="grid grid-cols-3 gap-3 mb-8">
+              <div className="bg-gray-800 border border-yellow-700 rounded-lg p-3 text-center">
+                <div className="text-2xl mb-1">👑</div>
+                <p className="text-yellow-500 font-semibold text-xs">
+                  Productos de calidad
+                </p>
               </div>
-
-              {/* Benefits Row */}
-              <div className="grid grid-cols-3 gap-3 mb-8">
-                <div className="bg-gray-800 border border-yellow-700 rounded-lg p-3 text-center">
-                  <div className="text-2xl mb-1">👑</div>
-                  <p className="text-yellow-500 font-semibold text-xs">Productos de calidad</p>
-                </div>
-                <div className="bg-gray-800 border border-yellow-700 rounded-lg p-3 text-center">
-                  <div className="text-2xl mb-1">📈</div>
-                  <p className="text-yellow-500 font-semibold text-xs">Altas ganancias</p>
-                </div>
-                <div className="bg-gray-800 border border-yellow-700 rounded-lg p-3 text-center">
-                  <div className="text-2xl mb-1">🤝</div>
-                  <p className="text-yellow-500 font-semibold text-xs">Soporte constante</p>
-                </div>
+              <div className="bg-gray-800 border border-yellow-700 rounded-lg p-3 text-center">
+                <div className="text-2xl mb-1">📈</div>
+                <p className="text-yellow-500 font-semibold text-xs">
+                  Precios mayoristas
+                </p>
               </div>
-
-              {/* Action Cards - 2x2 Grid */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
-                {/* Catalog PRO Card */}
-                <button
-                  onClick={() => setViewMode('catalog')}
-                  className="bg-gray-800 border-2 border-yellow-600 hover:border-yellow-400 text-white rounded-2xl p-6 transition-all hover:shadow-lg hover:shadow-yellow-500/20 group"
-                >
-                  <div className="flex items-start justify-between mb-3">
-                    <div className="text-3xl">👔</div>
-                    <ArrowRight size={20} className="text-yellow-500 group-hover:translate-x-1 transition-transform" />
-                  </div>
-                  <h3 className="text-lg font-bold mb-1">CATÁLOGO PRO</h3>
-                  <p className="text-yellow-200 text-sm mb-4">Accede a precios especiales y productos exclusivos.</p>
-                  <div className="bg-yellow-600 hover:bg-yellow-500 text-gray-900 px-4 py-2 rounded-lg font-semibold text-sm inline-flex items-center gap-2">
-                    Ver catálogo <span>→</span>
-                  </div>
-                </button>
-
-                {/* Calculator Card */}
-                <button
-                  onClick={() => setViewMode('calculator')}
-                  className="bg-gray-800 border-2 border-yellow-600 hover:border-yellow-400 text-white rounded-2xl p-6 transition-all hover:shadow-lg hover:shadow-yellow-500/20 group"
-                >
-                  <div className="flex items-start justify-between mb-3">
-                    <div className="text-3xl">🧮</div>
-                    <ArrowRight size={20} className="text-yellow-500 group-hover:translate-x-1 transition-transform" />
-                  </div>
-                  <h3 className="text-lg font-bold mb-1">CALCULADORA DE GANANCIAS</h3>
-                  <p className="text-yellow-200 text-sm mb-4">Calcula tu inversión y tus ganancias.</p>
-                  <div className="bg-yellow-600 hover:bg-yellow-500 text-gray-900 px-4 py-2 rounded-lg font-semibold text-sm inline-flex items-center gap-2">
-                    Calcular ahora <span>→</span>
-                  </div>
-                </button>
-
-                {/* Orders Card */}
-                <button
-                  onClick={() => setViewMode('catalog')}
-                  className="bg-gray-800 border-2 border-yellow-600 hover:border-yellow-400 text-white rounded-2xl p-6 transition-all hover:shadow-lg hover:shadow-yellow-500/20 group"
-                >
-                  <div className="flex items-start justify-between mb-3">
-                    <div className="text-3xl">📦</div>
-                    <ArrowRight size={20} className="text-yellow-500 group-hover:translate-x-1 transition-transform" />
-                  </div>
-                  <h3 className="text-lg font-bold mb-1">PEDIDOS A PROVEEDOR</h3>
-                  <p className="text-yellow-200 text-sm mb-4">Realiza tus pedidos directamente.</p>
-                  <div className="bg-yellow-600 hover:bg-yellow-500 text-gray-900 px-4 py-2 rounded-lg font-semibold text-sm inline-flex items-center gap-2">
-                    Hacer pedido <span>→</span>
-                  </div>
-                </button>
-
-                {/* Info Card */}
-                <button
-                  onClick={() => setViewMode('info')}
-                  className="bg-gray-800 border-2 border-yellow-600 hover:border-yellow-400 text-white rounded-2xl p-6 transition-all hover:shadow-lg hover:shadow-yellow-500/20 group"
-                >
-                  <div className="flex items-start justify-between mb-3">
-                    <div className="text-3xl">ℹ️</div>
-                    <ArrowRight size={20} className="text-yellow-500 group-hover:translate-x-1 transition-transform" />
-                  </div>
-                  <h3 className="text-lg font-bold mb-1">INFORMACIÓN DE NEGOCIO</h3>
-                  <p className="text-yellow-200 text-sm mb-4">Consejos, estrategias y todo lo que necesitas saber.</p>
-                  <div className="bg-yellow-600 hover:bg-yellow-500 text-gray-900 px-4 py-2 rounded-lg font-semibold text-sm inline-flex items-center gap-2">
-                    Ver información <span>→</span>
-                  </div>
-                </button>
+              <div className="bg-gray-800 border border-yellow-700 rounded-lg p-3 text-center">
+                <div className="text-2xl mb-1">🤝</div>
+                <p className="text-yellow-500 font-semibold text-xs">
+                  Soporte constante
+                </p>
               </div>
+            </div>
 
-              {/* More Benefits Card */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
               <button
-                onClick={() => setViewMode('info')}
-                className="w-full bg-gray-800 border-2 border-yellow-600 hover:border-yellow-400 text-white rounded-2xl p-6 transition-all hover:shadow-lg hover:shadow-yellow-500/20 mb-6"
+                onClick={() => setViewMode('catalog')}
+                className="bg-gray-800 border-2 border-yellow-600 hover:border-yellow-400 text-white rounded-2xl p-6 transition-all hover:shadow-lg hover:shadow-yellow-500/20 group"
               >
-                <div className="flex items-center justify-between">
-                  <div>
-                    <h3 className="text-lg font-bold mb-1">Más vendes, más ganas</h3>
-                    <p className="text-yellow-200 text-sm">Descuentos por volumen y beneficios exclusivos.</p>
-                  </div>
-                  <div className="text-3xl">⭐</div>
+                <div className="flex items-start justify-between mb-3">
+                  <div className="text-3xl">👔</div>
+                  <ArrowRight
+                    size={20}
+                    className="text-yellow-500 group-hover:translate-x-1 transition-transform"
+                  />
+                </div>
+                <h3 className="text-lg font-bold mb-1">CATALOGO PRO</h3>
+                <p className="text-yellow-200 text-sm mb-4">
+                  Pedidos por volumen con botones rapidos.
+                </p>
+                <div className="bg-yellow-600 hover:bg-yellow-500 text-gray-900 px-4 py-2 rounded-lg font-semibold text-sm inline-flex items-center gap-2">
+                  Ver catalogo <span>→</span>
                 </div>
               </button>
 
-              {/* Contact Card */}
-              <div className="bg-gray-800 border-2 border-yellow-600 rounded-2xl p-6 text-center">
-                <h3 className="text-white font-bold mb-2">¿Dudas o consultas?</h3>
-                <p className="text-yellow-200 text-sm mb-4">Escribenos por WhatsApp</p>
-                <button
-                  onClick={() => sendToWhatsApp('Hola, tengo dudas sobre el programa de revendedores')}
-                  className="bg-yellow-600 hover:bg-yellow-500 text-gray-900 px-6 py-2 rounded-full font-semibold text-sm inline-flex items-center gap-2"
-                >
-                  <MessageCircle size={16} />
-                  Contactar
-                </button>
-              </div>
+              <button
+                onClick={() => setViewMode('info')}
+                className="bg-gray-800 border-2 border-yellow-600 hover:border-yellow-400 text-white rounded-2xl p-6 transition-all hover:shadow-lg hover:shadow-yellow-500/20 group"
+              >
+                <div className="flex items-start justify-between mb-3">
+                  <div className="text-3xl">ℹ️</div>
+                  <ArrowRight
+                    size={20}
+                    className="text-yellow-500 group-hover:translate-x-1 transition-transform"
+                  />
+                </div>
+                <h3 className="text-lg font-bold mb-1">INFORMACION</h3>
+                <p className="text-yellow-200 text-sm mb-4">
+                  Consejos y estrategias de negocio.
+                </p>
+                <div className="bg-yellow-600 hover:bg-yellow-500 text-gray-900 px-4 py-2 rounded-lg font-semibold text-sm inline-flex items-center gap-2">
+                  Ver informacion <span>→</span>
+                </div>
+              </button>
+            </div>
+
+            <div className="bg-gray-800 border-2 border-yellow-600 rounded-2xl p-6 text-center">
+              <h3 className="text-white font-bold mb-2">
+                ¿Dudas o consultas?
+              </h3>
+              <p className="text-yellow-200 text-sm mb-4">
+                Escribenos por WhatsApp
+              </p>
+              <button
+                onClick={() =>
+                  sendToWhatsApp(
+                    'Hola, tengo dudas sobre el programa de revendedores'
+                  )
+                }
+                className="bg-yellow-600 hover:bg-yellow-500 text-gray-900 px-6 py-2 rounded-full font-semibold text-sm inline-flex items-center gap-2"
+              >
+                <MessageCircle size={16} />
+                Contactar
+              </button>
             </div>
           </div>
         </div>
       )}
 
-      {/* Catalog View */}
+      {/* Catalog View - Compact list for bulk orders */}
       {viewMode === 'catalog' && (
-        <div className="max-w-7xl mx-auto px-4 py-8">
+        <div className="max-w-5xl mx-auto px-4 py-8">
           <button
             onClick={() => setViewMode('home')}
             className="mb-6 text-yellow-500 hover:text-yellow-400 font-semibold flex items-center gap-1"
@@ -301,7 +180,7 @@ export default function Reseller({ onBack }: ResellerProps) {
           </button>
 
           <div className="bg-gray-800 border border-gray-700 rounded-xl p-4 mb-8">
-            <p className="text-gray-300 font-semibold mb-3">Categorías:</p>
+            <p className="text-gray-300 font-semibold mb-3">Categorias:</p>
             <div className="flex flex-wrap gap-2">
               {categories.map((cat) => (
                 <button
@@ -313,26 +192,20 @@ export default function Reseller({ onBack }: ResellerProps) {
                       : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
                   }`}
                 >
-                  {cat}
+                  {CATEGORY_LABELS[cat]}
                 </button>
               ))}
             </div>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+          {/* Product List - compact for bulk */}
+          <div className="space-y-3 mb-8">
             {filteredProducts.map((product) => (
-              <ProductCard
+              <ResellerProductRow
                 key={product.id}
                 product={product}
-                mode="reseller"
-                onAddToCart={(quantity) => {
-                  cart.addItem(
-                    product.id,
-                    product.name,
-                    quantity,
-                    product.priceClient,
-                    product.priceBase
-                  );
+                onAddToCart={(size, color, qty) => {
+                  cart.addItem(product, size, color, qty);
                 }}
               />
             ))}
@@ -349,82 +222,6 @@ export default function Reseller({ onBack }: ResellerProps) {
         </div>
       )}
 
-      {/* Calculator View */}
-      {viewMode === 'calculator' && (
-        <div className="max-w-3xl mx-auto px-4 py-8">
-          <button
-            onClick={() => setViewMode('home')}
-            className="mb-6 text-yellow-500 hover:text-yellow-400 font-semibold flex items-center gap-1"
-          >
-            ← Volver
-          </button>
-
-          <div className="bg-gray-800 border border-gray-700 rounded-2xl p-8">
-            <h3 className="text-2xl font-bold text-yellow-500 mb-6">Simulador de Ganancias</h3>
-
-            {cart.items.length === 0 ? (
-              <div className="text-center py-12">
-                <p className="text-gray-400 mb-4">Agrega productos al carrito para ver tus ganancias</p>
-                <button
-                  onClick={() => setViewMode('catalog')}
-                  className="bg-yellow-600 text-gray-900 px-6 py-3 rounded-lg font-semibold hover:bg-yellow-500 transition-colors"
-                >
-                  Ir al Catálogo
-                </button>
-              </div>
-            ) : (
-              <div className="space-y-6">
-                {cart.items.map((item) => {
-                  const margin = item.priceClient - item.priceBase;
-                  const marginPercent = ((margin / item.priceBase) * 100).toFixed(1);
-                  return (
-                    <div key={item.productId} className="border border-gray-700 rounded-lg p-4 bg-gray-900">
-                      <div className="flex justify-between items-start mb-3">
-                        <div>
-                          <h4 className="text-white font-semibold">{item.name}</h4>
-                          <p className="text-gray-400 text-sm">Cantidad: {item.quantity}</p>
-                        </div>
-                        <div className="text-right">
-                          <p className="text-yellow-500 font-bold">${margin.toFixed(2)} por unidad</p>
-                          <p className="text-gray-400 text-sm">{marginPercent}% ganancia</p>
-                        </div>
-                      </div>
-                      <div className="bg-gray-800 rounded p-3 text-sm">
-                        <div className="flex justify-between mb-2">
-                          <span className="text-gray-400">Costo total:</span>
-                          <span className="text-white">${(item.priceBase * item.quantity).toFixed(2)}</span>
-                        </div>
-                        <div className="flex justify-between border-t border-gray-700 pt-2">
-                          <span className="text-yellow-500 font-semibold">Ganancia total:</span>
-                          <span className="text-yellow-500 font-bold">${(margin * item.quantity).toFixed(2)}</span>
-                        </div>
-                      </div>
-                    </div>
-                  );
-                })}
-
-                <div className="bg-yellow-500/10 border-2 border-yellow-600 rounded-lg p-6 mt-8">
-                  <div className="flex justify-between items-center">
-                    <div>
-                      <p className="text-gray-400 text-sm">Ganancia Total Proyectada</p>
-                      <p className="text-yellow-500 text-3xl font-bold">
-                        ${cart.getProfit().toFixed(2)}
-                      </p>
-                    </div>
-                    <div className="text-right">
-                      <p className="text-gray-400 text-sm">Inversión Total</p>
-                      <p className="text-white text-2xl font-bold">
-                        ${cart.getTotal().toFixed(2)}
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            )}
-          </div>
-        </div>
-      )}
-
       {/* Info View */}
       {viewMode === 'info' && (
         <div className="max-w-3xl mx-auto px-4 py-8">
@@ -436,35 +233,51 @@ export default function Reseller({ onBack }: ResellerProps) {
           </button>
 
           <div className="space-y-6">
-            {/* Reseller Options */}
             <div className="bg-gray-800 border border-gray-700 rounded-2xl p-8">
-              <h3 className="text-2xl font-bold text-yellow-500 mb-6">Opciones de Revendedor</h3>
+              <h3 className="text-2xl font-bold text-yellow-500 mb-6">
+                Opciones de Revendedor
+              </h3>
               <div className="space-y-6">
                 <div className="bg-gray-900 rounded-xl p-6 border border-gray-700">
-                  <h4 className="text-white font-bold text-lg mb-2">Opción 1: Vender con NEXUS</h4>
-                  <p className="text-gray-400 mb-3">Usas nuestra marca y nuestros diseños</p>
+                  <h4 className="text-white font-bold text-lg mb-2">
+                    Opcion 1: Vender con NEXUS
+                  </h4>
+                  <p className="text-gray-400 mb-3">
+                    Usas nuestra marca y nuestros diseños
+                  </p>
                   <div className="bg-yellow-500/10 rounded-lg p-3">
-                    <p className="text-yellow-500 font-semibold">Comisión promedio: $3 - $5 por producto</p>
+                    <p className="text-yellow-500 font-semibold">
+                      Comision promedio: $3 - $5 por producto
+                    </p>
                   </div>
                 </div>
                 <div className="bg-gray-900 rounded-xl p-6 border border-gray-700">
-                  <h4 className="text-white font-bold text-lg mb-2">Opción 2: Crear Tu Marca</h4>
-                  <p className="text-gray-400 mb-3">Logo gratis, compras barato, vendes mas caro</p>
+                  <h4 className="text-white font-bold text-lg mb-2">
+                    Opcion 2: Crear Tu Marca
+                  </h4>
+                  <p className="text-gray-400 mb-3">
+                    Logo gratis, compras barato, vendes mas caro
+                  </p>
                   <div className="bg-green-500/10 rounded-lg p-3 space-y-1">
                     <p className="text-green-500 font-semibold">Ejemplo:</p>
-                    <p className="text-gray-300 text-sm">Compra: $8 | Venta: $15 | Ganancia: $7</p>
+                    <p className="text-gray-300 text-sm">
+                      Compra: $8 | Venta: $15 | Ganancia: $7
+                    </p>
                   </div>
                 </div>
               </div>
             </div>
 
-            {/* Tips */}
             <div className="bg-gray-800 border border-gray-700 rounded-2xl p-8">
-              <h3 className="text-2xl font-bold text-yellow-500 mb-4">Consejos para Revendedores</h3>
+              <h3 className="text-2xl font-bold text-yellow-500 mb-4">
+                Consejos para Revendedores
+              </h3>
               <ul className="space-y-4 text-gray-300">
                 <li className="flex gap-4">
                   <span className="text-yellow-500 text-xl font-bold">1</span>
-                  <span>Comienza con un lote pequeño para conocer la demanda</span>
+                  <span>
+                    Comienza con un lote pequeño para conocer la demanda
+                  </span>
                 </li>
                 <li className="flex gap-4">
                   <span className="text-yellow-500 text-xl font-bold">2</span>
@@ -472,7 +285,9 @@ export default function Reseller({ onBack }: ResellerProps) {
                 </li>
                 <li className="flex gap-4">
                   <span className="text-yellow-500 text-xl font-bold">3</span>
-                  <span>Promociona en redes sociales para maximizar ventas</span>
+                  <span>
+                    Promociona en redes sociales para maximizar ventas
+                  </span>
                 </li>
               </ul>
             </div>
@@ -485,14 +300,143 @@ export default function Reseller({ onBack }: ResellerProps) {
         <CartModal
           items={cart.items}
           mode="reseller"
-          total={cart.getTotal()}
-          profit={cart.getProfit()}
           onClose={() => setShowCart(false)}
           onUpdateQuantity={cart.updateQuantity}
           onRemoveItem={cart.removeItem}
           onSendOrder={handleSendOrder}
         />
       )}
+    </div>
+  );
+}
+
+/* Compact row component for reseller bulk ordering */
+function ResellerProductRow({
+  product,
+  onAddToCart,
+}: {
+  product: Product;
+  onAddToCart: (size: string, color: string, qty: number) => void;
+}) {
+  const [selectedSize, setSelectedSize] = useState('');
+  const [selectedColor, setSelectedColor] = useState('');
+  const [quantity, setQuantity] = useState(1);
+
+  const canAdd = () => {
+    if (product.hasSizes && !selectedSize) return false;
+    if (!selectedColor) return false;
+    return true;
+  };
+
+  const handleAdd = (qty: number) => {
+    if (!canAdd()) return;
+    onAddToCart(selectedSize, selectedColor, qty);
+    setQuantity(1);
+  };
+
+  return (
+    <div className="bg-gray-800 border border-gray-700 rounded-xl p-4">
+      <div className="flex gap-4 items-start">
+        {/* Image */}
+        <img
+          src={product.image}
+          alt={product.name}
+          className="w-20 h-20 object-contain rounded-lg bg-white p-1 shrink-0"
+        />
+
+        <div className="flex-1 min-w-0">
+          {/* Name + Category */}
+          <div className="flex items-center gap-2 mb-2">
+            <h3 className="text-white font-bold text-sm truncate">
+              {product.name}
+            </h3>
+            <span className="bg-yellow-500/20 text-yellow-400 px-2 py-0.5 rounded text-xs font-semibold shrink-0">
+              {CATEGORY_LABELS[product.category]}
+            </span>
+          </div>
+
+          {/* Size selector (compact) */}
+          {product.hasSizes && (
+            <div className="flex gap-1.5 mb-2">
+              {SIZES.map((size) => (
+                <button
+                  key={size}
+                  onClick={() => setSelectedSize(size)}
+                  className={`w-8 h-8 rounded text-xs font-bold transition-all ${
+                    selectedSize === size
+                      ? 'bg-yellow-500 text-gray-900'
+                      : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
+                  }`}
+                >
+                  {size}
+                </button>
+              ))}
+            </div>
+          )}
+
+          {/* Color selector (compact) */}
+          <div className="flex flex-wrap gap-1.5 mb-3">
+            {product.colors.map((color) => (
+              <button
+                key={color}
+                onClick={() => setSelectedColor(color)}
+                className={`px-2 py-1 rounded text-xs font-semibold transition-all ${
+                  selectedColor === color
+                    ? 'bg-yellow-500 text-gray-900'
+                    : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
+                }`}
+              >
+                {color}
+              </button>
+            ))}
+          </div>
+
+          {/* Quantity + Quick add buttons */}
+          <div className="flex items-center gap-2 flex-wrap">
+            <div className="flex items-center gap-1 bg-gray-700 rounded-lg border border-gray-600">
+              <button
+                onClick={() => setQuantity(Math.max(1, quantity - 1))}
+                className="p-1.5 text-gray-300 hover:text-yellow-500"
+              >
+                <Minus size={14} />
+              </button>
+              <span className="w-8 text-center text-sm font-semibold text-white">
+                {quantity}
+              </span>
+              <button
+                onClick={() => setQuantity(quantity + 1)}
+                className="p-1.5 text-gray-300 hover:text-yellow-500"
+              >
+                <Plus size={14} />
+              </button>
+            </div>
+
+            {/* Quick add buttons */}
+            <button
+              onClick={() => handleAdd(5)}
+              disabled={!canAdd()}
+              className="px-3 py-1.5 rounded-lg text-xs font-bold bg-gray-700 text-yellow-400 hover:bg-yellow-500 hover:text-gray-900 transition-all disabled:opacity-40 disabled:cursor-not-allowed"
+            >
+              +5
+            </button>
+            <button
+              onClick={() => handleAdd(10)}
+              disabled={!canAdd()}
+              className="px-3 py-1.5 rounded-lg text-xs font-bold bg-gray-700 text-yellow-400 hover:bg-yellow-500 hover:text-gray-900 transition-all disabled:opacity-40 disabled:cursor-not-allowed"
+            >
+              +10
+            </button>
+
+            <button
+              onClick={() => handleAdd(quantity)}
+              disabled={!canAdd()}
+              className="ml-auto px-4 py-1.5 rounded-lg text-xs font-bold bg-yellow-500 text-gray-900 hover:bg-yellow-600 transition-all disabled:opacity-40 disabled:cursor-not-allowed"
+            >
+              Agregar
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }

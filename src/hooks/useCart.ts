@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react';
-import { CartItem } from '../types';
+import { useState, useEffect, useCallback } from 'react';
+import { CartItem, Product } from '../types';
 
 export function useCart(mode: 'client' | 'reseller') {
   const [items, setItems] = useState<CartItem[]>([]);
@@ -15,64 +15,89 @@ export function useCart(mode: 'client' | 'reseller') {
     localStorage.setItem(`cart-${mode}`, JSON.stringify(items));
   }, [items, mode]);
 
-  const addItem = (
-    productId: string,
-    name: string,
-    quantity: number,
-    priceClient: number,
-    priceBase: number
+  const addItem = useCallback((
+    product: Product,
+    selectedSize: string,
+    selectedColor: string,
+    quantity: number
   ) => {
     setItems((prev) => {
-      const existing = prev.find((item) => item.productId === productId);
+      const existing = prev.find(
+        (item) =>
+          item.productId === product.id &&
+          item.selectedSize === selectedSize &&
+          item.selectedColor === selectedColor
+      );
       if (existing) {
         return prev.map((item) =>
-          item.productId === productId
+          item.productId === product.id &&
+          item.selectedSize === selectedSize &&
+          item.selectedColor === selectedColor
             ? { ...item, quantity: item.quantity + quantity }
             : item
         );
       }
       return [
         ...prev,
-        { productId, name, quantity, priceClient, priceBase }
+        {
+          productId: product.id,
+          name: product.name,
+          image: product.image,
+          category: product.category,
+          selectedSize,
+          selectedColor,
+          quantity,
+        },
       ];
     });
-  };
+  }, []);
 
-  const updateQuantity = (productId: string, quantity: number) => {
+  const updateQuantity = useCallback((
+    productId: string,
+    selectedSize: string,
+    selectedColor: string,
+    quantity: number
+  ) => {
     if (quantity <= 0) {
-      removeItem(productId);
+      removeItem(productId, selectedSize, selectedColor);
       return;
     }
     setItems((prev) =>
       prev.map((item) =>
-        item.productId === productId ? { ...item, quantity } : item
+        item.productId === productId &&
+        item.selectedSize === selectedSize &&
+        item.selectedColor === selectedColor
+          ? { ...item, quantity }
+          : item
       )
     );
-  };
+  }, []);
 
-  const removeItem = (productId: string) => {
-    setItems((prev) => prev.filter((item) => item.productId !== productId));
-  };
+  const removeItem = useCallback((
+    productId: string,
+    selectedSize: string,
+    selectedColor: string
+  ) => {
+    setItems((prev) =>
+      prev.filter(
+        (item) =>
+          !(
+            item.productId === productId &&
+            item.selectedSize === selectedSize &&
+            item.selectedColor === selectedColor
+          )
+      )
+    );
+  }, []);
 
-  const clearCart = () => {
+  const clearCart = useCallback(() => {
     setItems([]);
-  };
+  }, []);
 
-  const getTotalItems = () => items.reduce((sum, item) => sum + item.quantity, 0);
-
-  const getTotal = () => {
-    if (mode === 'client') {
-      return items.reduce((sum, item) => sum + item.priceClient * item.quantity, 0);
-    }
-    return items.reduce((sum, item) => sum + item.priceBase * item.quantity, 0);
-  };
-
-  const getProfit = () => {
-    return items.reduce((sum, item) => {
-      const margin = item.priceClient - item.priceBase;
-      return sum + margin * item.quantity;
-    }, 0);
-  };
+  const getTotalItems = useCallback(() =>
+    items.reduce((sum, item) => sum + item.quantity, 0),
+    [items]
+  );
 
   return {
     items,
@@ -81,7 +106,5 @@ export function useCart(mode: 'client' | 'reseller') {
     removeItem,
     clearCart,
     getTotalItems,
-    getTotal,
-    getProfit
   };
 }

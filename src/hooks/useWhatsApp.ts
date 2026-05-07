@@ -3,29 +3,21 @@ import { CartItem } from '../types';
 const WHATSAPP_NUMBER = '50764987682';
 
 export function useWhatsApp() {
-  const generateOrderMessage = (
-    items: CartItem[],
-    mode: 'client' | 'reseller',
-    total: number,
-    profit?: number
-  ) => {
-    let message = 'Hola, me gustaría realizar un pedido:\n\n';
+  const generateOrderMessage = (items: CartItem[], mode: 'client' | 'reseller') => {
+    let message = 'Hola NEXUS! Quiero cotizar estos productos base:\n\n';
 
     items.forEach((item) => {
-      const price = mode === 'client' ? item.priceClient : item.priceBase;
-      const itemTotal = price * item.quantity;
-      message += `${item.name}\n`;
-      message += `  Cantidad: ${item.quantity} x $${price.toLocaleString('es-CO')}\n`;
-      message += `  Subtotal: $${itemTotal.toLocaleString('es-CO')}\n\n`;
+      const sizeText = item.selectedSize
+        ? ` (Talla ${item.selectedSize}, Color ${item.selectedColor})`
+        : ` (Color ${item.selectedColor})`;
+      message += `- ${item.quantity}x ${item.name}${sizeText}\n`;
     });
 
-    message += `Total: $${total.toLocaleString('es-CO')}\n`;
+    message += '\nAdjunto los diseños para que me den el precio total.';
 
-    if (mode === 'reseller' && profit !== undefined) {
-      message += `Ganancia esperada: $${profit.toLocaleString('es-CO')}\n`;
+    if (mode === 'reseller') {
+      message += '\n\nSoy revendedor, me interesa precio mayorista.';
     }
-
-    message += '\nPor favor confirmar disponibilidad y coordinar envío.';
 
     return message;
   };
@@ -36,13 +28,8 @@ export function useWhatsApp() {
     window.open(url, '_blank');
   };
 
-  const openWhatsAppChat = (message: string) => {
-    sendToWhatsApp(message);
-  };
-
   return {
     generateOrderMessage,
     sendToWhatsApp,
-    openWhatsAppChat
   };
 }

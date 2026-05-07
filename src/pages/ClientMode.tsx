@@ -1,6 +1,7 @@
 import { useState } from 'react';
-import { ShoppingCart, Menu, X, MessageCircle, Truck, CheckCircle, Heart } from 'lucide-react';
-import { products, combos } from '../data/products';
+import { ShoppingCart, Menu, X, MessageCircle } from 'lucide-react';
+import { products, CATEGORY_LABELS } from '../data/products';
+import { Category } from '../types';
 import { useCart } from '../hooks/useCart';
 import { useWhatsApp } from '../hooks/useWhatsApp';
 import ProductCard from '../components/ProductCard';
@@ -13,30 +14,21 @@ interface ClientModeProps {
 export default function ClientMode({ onBack }: ClientModeProps) {
   const [showCart, setShowCart] = useState(false);
   const [showMenu, setShowMenu] = useState(false);
-  const [viewMode, setViewMode] = useState<'home' | 'catalog' | 'combos'>('home');
-  const [selectedCategory, setSelectedCategory] = useState<string>('ROPA');
+  const [viewMode, setViewMode] = useState<'home' | 'catalog'>('home');
+  const [selectedCategory, setSelectedCategory] = useState<Category>('textil');
   const cart = useCart('client');
   const { generateOrderMessage, sendToWhatsApp } = useWhatsApp();
 
   const handleSendOrder = () => {
-    if (cart.items.length === 0) {
-      alert('Agrega productos al carrito');
-      return;
-    }
-    const message = generateOrderMessage(cart.items, 'client', cart.getTotal());
+    if (cart.items.length === 0) return;
+    const message = generateOrderMessage(cart.items, 'client');
     sendToWhatsApp(message);
     cart.clearCart();
     setShowCart(false);
   };
 
-  const categories = Array.from(new Set(products.map(p => p.category)));
-  const comboCategories = Array.from(new Set(combos.map(c => c.category)));
-  const filteredProducts = selectedCategory
-    ? products.filter(p => p.category === selectedCategory)
-    : products;
-  const filteredCombos = Array.from(new Set(combos.map(c => c.category)))[0]
-    ? combos.filter(c => c.category === comboCategories[0])
-    : combos;
+  const categories: Category[] = ['textil', 'hogar', 'accesorios'];
+  const filteredProducts = products.filter((p) => p.category === selectedCategory);
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -81,37 +73,38 @@ export default function ClientMode({ onBack }: ClientModeProps) {
 
       {/* Home View */}
       {viewMode === 'home' && (
-        <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
-          {/* Hero Section */}
+        <div className="bg-gradient-to-b from-gray-50 to-white">
           <div className="bg-white px-4 py-8">
             <div className="max-w-3xl mx-auto">
-              {/* Logo */}
-              <div className="text-center mb-6">
-                <h1 className="text-3xl font-bold text-gray-900 mb-2">Estilo que te impulsa</h1>
-                <p className="text-gray-600">Ropa urbana con actitud y libertad.</p>
+              <div className="text-center mb-8">
+                <h1 className="text-3xl font-bold text-gray-900 mb-2">
+                  Elige tu producto base
+                </h1>
+                <p className="text-gray-600">
+                  Selecciona la base, elige talla y color, y envianos tu diseño.
+                </p>
               </div>
 
-              {/* Badge */}
               <div className="bg-red-100 border border-red-300 rounded-full px-4 py-2 inline-flex items-center gap-2 mb-8">
-                <span className="text-red-600 font-semibold text-sm">✨ Nuevos diseños cada semana</span>
+                <span className="text-red-600 font-semibold text-sm">
+                  Cotizacion final via WhatsApp
+                </span>
               </div>
 
-              {/* Action Cards - 3 columns */}
+              {/* Action Cards */}
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
-                {/* Catalog Card */}
                 <button
                   onClick={() => setViewMode('catalog')}
                   className="bg-red-600 hover:bg-red-700 text-white rounded-2xl p-6 transition-all transform hover:scale-105 shadow-lg"
                 >
                   <div className="text-4xl mb-3">👕</div>
-                  <h3 className="text-xl font-bold mb-2">CATÁLOGO</h3>
-                  <p className="text-red-100 text-sm mb-4">Ver productos</p>
+                  <h3 className="text-xl font-bold mb-2">CATALOGO</h3>
+                  <p className="text-red-100 text-sm mb-4">Ver productos base</p>
                   <div className="inline-flex items-center gap-1 text-sm font-semibold">
                     Ver productos <span>→</span>
                   </div>
                 </button>
 
-                {/* Cart Card */}
                 <button
                   onClick={() => setShowCart(true)}
                   className="bg-orange-500 hover:bg-orange-600 text-white rounded-2xl p-6 transition-all transform hover:scale-105 shadow-lg relative"
@@ -129,9 +122,8 @@ export default function ClientMode({ onBack }: ClientModeProps) {
                   </div>
                 </button>
 
-                {/* WhatsApp Card */}
                 <button
-                  onClick={() => sendToWhatsApp('Hola, quiero hacer un pedido')}
+                  onClick={() => sendToWhatsApp('Hola, quiero cotizar productos base')}
                   className="bg-green-500 hover:bg-green-600 text-white rounded-2xl p-6 transition-all transform hover:scale-105 shadow-lg"
                 >
                   <div className="text-4xl mb-3">✈️</div>
@@ -143,16 +135,20 @@ export default function ClientMode({ onBack }: ClientModeProps) {
                 </button>
               </div>
 
-              {/* WhatsApp Contact Card */}
+              {/* WhatsApp Contact */}
               <div className="bg-green-50 border-2 border-green-500 rounded-2xl p-6 mb-8 flex items-start gap-4">
                 <div className="text-3xl">💬</div>
                 <div className="flex-1">
-                  <h3 className="font-bold text-gray-900 mb-1">¿Diseño personalizado?</h3>
-                  <p className="text-gray-600 text-sm mb-3">Escribenos y lo hacemos realidad</p>
+                  <h3 className="font-bold text-gray-900 mb-1">
+                    ¿Diseño personalizado?
+                  </h3>
+                  <p className="text-gray-600 text-sm mb-3">
+                    Escribenos y lo hacemos realidad
+                  </p>
                 </div>
                 <button
                   onClick={() => sendToWhatsApp('Hola, quiero un diseño personalizado')}
-                  className="bg-green-500 hover:bg-green-600 text-white px-6 py-2 rounded-full font-semibold text-sm transition-colors flex items-center gap-1 whitespace-nowrap"
+                  className="bg-green-500 hover:bg-green-600 text-white px-6 py-2 rounded-full font-semibold text-sm transition-colors whitespace-nowrap"
                 >
                   Quiero uno
                 </button>
@@ -161,19 +157,31 @@ export default function ClientMode({ onBack }: ClientModeProps) {
               {/* Benefits */}
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                 <div className="bg-white border border-gray-200 rounded-xl p-4 text-center">
-                  <div className="text-3xl mb-2">🚚</div>
-                  <h4 className="font-bold text-gray-900 text-sm mb-1">Envíos rápidos</h4>
-                  <p className="text-gray-600 text-xs">A todo el país en 48 horas</p>
+                  <div className="text-3xl mb-2">🎨</div>
+                  <h4 className="font-bold text-gray-900 text-sm mb-1">
+                    Tu diseño, tu estilo
+                  </h4>
+                  <p className="text-gray-600 text-xs">
+                    Sublimacion y DTF de alta calidad
+                  </p>
+                </div>
+                <div className="bg-white border border-gray-200 rounded-xl p-4 text-center">
+                  <div className="text-3xl mb-2">📦</div>
+                  <h4 className="font-bold text-gray-900 text-sm mb-1">
+                    Envios rapidos
+                  </h4>
+                  <p className="text-gray-600 text-xs">
+                    A todo el pais en 48 horas
+                  </p>
                 </div>
                 <div className="bg-white border border-gray-200 rounded-xl p-4 text-center">
                   <div className="text-3xl mb-2">✓</div>
-                  <h4 className="font-bold text-gray-900 text-sm mb-1">Calidad garantizada</h4>
-                  <p className="text-gray-600 text-xs">Productos premium auténticos</p>
-                </div>
-                <div className="bg-white border border-gray-200 rounded-xl p-4 text-center">
-                  <div className="text-3xl mb-2">❤️</div>
-                  <h4 className="font-bold text-gray-900 text-sm mb-1">Hecho con pasión</h4>
-                  <p className="text-gray-600 text-xs">Para gente auténtica</p>
+                  <h4 className="font-bold text-gray-900 text-sm mb-1">
+                    Calidad garantizada
+                  </h4>
+                  <p className="text-gray-600 text-xs">
+                    Productos premium autenticos
+                  </p>
                 </div>
               </div>
             </div>
@@ -184,7 +192,6 @@ export default function ClientMode({ onBack }: ClientModeProps) {
       {/* Catalog View */}
       {viewMode === 'catalog' && (
         <div className="max-w-7xl mx-auto px-4 py-8">
-          {/* Back Button */}
           <button
             onClick={() => setViewMode('home')}
             className="mb-6 text-red-600 hover:text-red-700 font-semibold flex items-center gap-1"
@@ -194,7 +201,7 @@ export default function ClientMode({ onBack }: ClientModeProps) {
 
           {/* Category Filter */}
           <div className="bg-white border border-gray-200 rounded-xl p-4 mb-8 shadow-sm">
-            <p className="text-gray-700 font-semibold mb-3">Categorías:</p>
+            <p className="text-gray-700 font-semibold mb-3">Categorias:</p>
             <div className="flex flex-wrap gap-2">
               {categories.map((cat) => (
                 <button
@@ -206,33 +213,26 @@ export default function ClientMode({ onBack }: ClientModeProps) {
                       : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                   }`}
                 >
-                  {cat}
+                  {CATEGORY_LABELS[cat]}
                 </button>
               ))}
             </div>
           </div>
 
-          {/* Products Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+          {/* Products Grid - 2 cols mobile, 4 cols desktop */}
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
             {filteredProducts.map((product) => (
               <ProductCard
                 key={product.id}
                 product={product}
                 mode="client"
-                onAddToCart={(quantity) => {
-                  cart.addItem(
-                    product.id,
-                    product.name,
-                    quantity,
-                    product.priceClient,
-                    product.priceBase
-                  );
+                onAddToCart={(selectedSize, selectedColor, quantity) => {
+                  cart.addItem(product, selectedSize, selectedColor, quantity);
                 }}
               />
             ))}
           </div>
 
-          {/* Back to Home */}
           <div className="text-center">
             <button
               onClick={() => setViewMode('home')}
@@ -249,7 +249,6 @@ export default function ClientMode({ onBack }: ClientModeProps) {
         <CartModal
           items={cart.items}
           mode="client"
-          total={cart.getTotal()}
           onClose={() => setShowCart(false)}
           onUpdateQuantity={cart.updateQuantity}
           onRemoveItem={cart.removeItem}
